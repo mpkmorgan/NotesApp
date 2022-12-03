@@ -1,5 +1,6 @@
 package com.example.notesapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
 
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
     holder.textview_title.setText(List.get(position).getTitle());
@@ -58,8 +60,22 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesViewHolder>{
     }
 
     int color_code =getRandomColor();
-    holder.notes_container.setCardBackgroundColor(holder.itemView.getResources().getColor(color_code));
+    holder.notes_container.setCardBackgroundColor(holder.itemView.getResources().getColor(color_code,null));
 
+    holder.notes_container.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            listener.onClick(List.get(holder.getAdapterPosition()));
+        }
+    });
+
+    holder.notes_container.setOnLongClickListener(new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            listener.onLongClick(List.get(holder.getAdapterPosition()), holder.notes_container);
+            return true;
+        }
+    });
 
     }
 
